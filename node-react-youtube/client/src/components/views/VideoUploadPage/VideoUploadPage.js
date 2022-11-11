@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Axios from 'axios'
 // Dropzone import
 import Dropzone from 'react-dropzone'
 // CSS import
@@ -20,13 +21,13 @@ const CategoryOptions = [
   { value: 0, label: "Sports" },
 ]
 
-
 const VideoUploadPage = () => {
   const [title, setTitle] = useState('');
   const [desc, setDesc] = useState('');
   const [_private, setPrivate] = useState(0);
   const [category, setCategory] = useState("File & Animation");
 
+  // onChangeHandler
   const onChangeTitle = (e) => {
     setTitle(e.target.value)
   }
@@ -40,7 +41,28 @@ const VideoUploadPage = () => {
     setCategory(e.target.value)
   }
 
+  //onDropHandler
+  const onDrop = (files) => {
+    let formData = new FormData;
+    const config = {
+      header: {'content-type': 'multipart/form-data'}
+    }
+    formData.append('file', files[0])
 
+    console.log(files)
+
+    Axios.post('/api/video/uploadfiles', formData, config).then(response => {
+      if(response.data.success){
+        console.log(response.data)
+      }else{
+        alert("Upload video failed")
+      }
+    });
+  }
+  // onClickHandler
+  const onClick = () => {}
+  // onSubmitHandler
+  const onSubmit = () => {}
 
   return (
     <div style={{ maxWidth: '700px', margin: '2rem auto' }}>
@@ -48,13 +70,13 @@ const VideoUploadPage = () => {
           <Title level={2} >Upload Video</Title>
       </div>
 
-      <Form onsubmit>
+      <Form onSubmit={onSubmit}>
         <div>
           {/* Drop zone */}
           <Dropzone
-              onDrop
-              multiple
-              maxSize>
+              onDrop={onDrop}
+              multiple={false}
+              maxSize={800000000}>
               {({ getRootProps, getInputProps }) => (
                   <div style={{ width: '300px', height: '240px', border: '1px solid lightgray', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                       {...getRootProps()}
@@ -95,7 +117,7 @@ const VideoUploadPage = () => {
             </select>
           </p>
 
-          <Button type="primary" size="large" onClick>Submit</Button>
+          <Button type="primary" size="large" onClick={onClick}>Submit</Button>
 
         </div>
       </Form>

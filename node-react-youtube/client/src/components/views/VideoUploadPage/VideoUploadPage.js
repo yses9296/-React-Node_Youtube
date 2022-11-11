@@ -43,17 +43,17 @@ const VideoUploadPage = () => {
 
   //onDropHandler
   const onDrop = (files) => {
-    let formData = new FormData;
+    let formData = new FormData();
     const config = {
-      header: {'content-type': 'multipart/form-data'}
+      header: { 'content-type': 'multipart/form-data' }
     }
     formData.append('file', files[0])
 
     console.log(files)
 
     Axios.post('/api/video/uploadfiles', formData, config)
-    .then(response => {
-      if(response.data.success){
+    .then(response  => {
+      if(response.data.success) {
         console.log(response.data)//video 업로드 서버 응답
 
         let variable = {
@@ -66,15 +66,17 @@ const VideoUploadPage = () => {
         //썸네일 생성
         Axios.post('/api/video/thumbnail', variable)
         .then(response =>{
-          if(response.data.success){
+          if(response.data.success) {
             console.log(response.data)
-          }else{
-            alert("Creating thumbnail is failed")
+          } 
+          else {
+            alert("Failed to make the thumbnails")
           }
         })
 
-      }else{
-        alert("Upload video failed")
+      }
+      else {
+        alert("failed to save the video in server")
       }
     });
   }

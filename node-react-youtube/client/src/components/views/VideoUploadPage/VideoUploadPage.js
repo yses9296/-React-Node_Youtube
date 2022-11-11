@@ -51,9 +51,28 @@ const VideoUploadPage = () => {
 
     console.log(files)
 
-    Axios.post('/api/video/uploadfiles', formData, config).then(response => {
+    Axios.post('/api/video/uploadfiles', formData, config)
+    .then(response => {
       if(response.data.success){
-        console.log(response.data)
+        console.log(response.data)//video 업로드 서버 응답
+
+        let variable = {
+          filePath: response.data.filePath,
+          fileName: response.data.fileName
+        }
+
+        // setFilePath(response.data.filePath)
+
+        //썸네일 생성
+        Axios.post('/api/video/thumbnail', variable)
+        .then(response =>{
+          if(response.data.success){
+            console.log(response.data)
+          }else{
+            alert("Creating thumbnail is failed")
+          }
+        })
+
       }else{
         alert("Upload video failed")
       }

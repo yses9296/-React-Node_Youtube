@@ -27,6 +27,10 @@ const VideoUploadPage = () => {
   const [_private, setPrivate] = useState(0);
   const [category, setCategory] = useState("File & Animation");
 
+  const [FilePath, setFilePath] = useState('');
+  const [Duration, setDuration] = useState('');
+  const [ThumbnailPath, setThumbnailPath] = useState("")
+
   // onChangeHandler
   const onChangeTitle = (e) => {
     setTitle(e.target.value)
@@ -61,13 +65,15 @@ const VideoUploadPage = () => {
           fileName: response.data.fileName
         }
 
-        // setFilePath(response.data.filePath)
+        setFilePath(response.data.filePath)
 
         //썸네일 생성
         Axios.post('/api/video/thumbnail', variable)
         .then(response =>{
           if(response.data.success) {
-            console.log(response.data)
+            console.log(response.data);
+            setDuration(response.data.fileDuration);
+            setThumbnailPath(response.data.thumbsFilePath);
           } 
           else {
             alert("Failed to make the thumbnails")
@@ -110,7 +116,7 @@ const VideoUploadPage = () => {
           </Dropzone>
           {/* Thumbnail */}
           <div>
-            <img></img>
+            {ThumbnailPath && <img src={`http://localhost:5000/${ThumbnailPath}`} alt="Thumbnail"></img> }
           </div>
 
           <p>

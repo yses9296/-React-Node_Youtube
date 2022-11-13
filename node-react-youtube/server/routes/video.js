@@ -77,7 +77,7 @@ router.post("/thumbnail", (req, res) => {
 });
 
 
-//mongoDB에 비디오 데이터 저장하기
+//mongoDB에 비디오 데이터 저장하기 - VideoPage
 router.post("/uploadVideo", (req, res) => {
     //비디오 정보들을 DB에 저장
     const video = new Video(req.body)
@@ -91,7 +91,7 @@ router.post("/uploadVideo", (req, res) => {
 
 });
 
-//mongoDB로부터 비디오 데이터 가져오기
+//mongoDB로부터 비디오 데이터 가져오기 - LandingPage
 router.get("/getVideos", (req, res) => {
     //비디오 정보들을 DB로부터 가져와 클라이언트에 전달하기
     Video.find()
@@ -99,6 +99,17 @@ router.get("/getVideos", (req, res) => {
         .exec( (err, videos) => {
             if(err) return res.status(400).send(err);
             res.status(200).json( {success: true, videos})
+        })
+});
+
+//mongoDB로부터 비디오 데이터 가져오기 - VideoDetailPage
+router.get("/getVideoDetail", (req, res) => {
+    //클라이언트가 보낸 비디오 ID를 사용하여 DB에서 해당 비디오 데이터 가져오기
+    Video.findOne({ "_id" : req.body.videoId })
+        .populate('writer')
+        .exec( (err, videoDetail) => {
+            if(err) return res.status(400).send(err);
+            res.status(200).json( {success: true, videoDetail})
         })
 });
 

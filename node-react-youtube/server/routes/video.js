@@ -4,7 +4,7 @@ const path = require('path');
 const multer = require('multer');
 const ffmpeg = require('fluent-ffmpeg');
 
-// const { Video } = require("../models/Video");
+const { Video } = require("../models/Video");
 const { auth } = require("../middleware/auth");
 
 
@@ -27,7 +27,7 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage }).single("file")
 
 //=================================
-//             VIdeo
+//             Video
 //=================================
 
 router.post("/uploadfiles", (req, res) => {
@@ -77,5 +77,18 @@ router.post("/thumbnail", (req, res) => {
 });
 
 
+
+router.post("/uploadVideo", (req, res) => {
+    //비디오 정보들을 DB에 저장
+    const video = new Video(req.body)
+
+    //mongoDB에 저장
+    video.save( (err, doc) => {
+        if(err) return res.json( { success : false, err } )
+        res.status(200).json( { success: true } )
+    }) 
+
+
+});
 
 module.exports = router;

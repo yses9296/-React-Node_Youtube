@@ -5,6 +5,7 @@ import Dropzone from 'react-dropzone'
 // CSS import
 import { Typography, Button, Form, message, Input, Icon } from 'antd';
 
+import { useSelector } from "react-redux";
 
 const { Title } = Typography;
 const { TextArea } = Input;
@@ -21,11 +22,13 @@ const CategoryOptions = [
   { value: 0, label: "Sports" },
 ]
 
-const VideoUploadPage = () => {
-  const [title, setTitle] = useState('');
-  const [desc, setDesc] = useState('');
-  const [_private, setPrivate] = useState(0);
-  const [category, setCategory] = useState("File & Animation");
+const VideoUploadPage = (props) => {
+  const user = useSelector(state => state.user);
+
+  const [VideoTitle, setVideoTitle] = useState('');
+  const [Description, setDescription] = useState('');
+  const [Private, setPrivate] = useState(0);
+  const [Category, setCategory] = useState("File & Animation");
 
   const [FilePath, setFilePath] = useState('');
   const [Duration, setDuration] = useState('');
@@ -33,10 +36,10 @@ const VideoUploadPage = () => {
 
   // onChangeHandler
   const onChangeTitle = (e) => {
-    setTitle(e.target.value)
+    setVideoTitle(e.target.value)
   }
   const onChangeDesc = (e) => {
-    setDesc(e.target.value)
+    setDescription(e.target.value)
   }
   const onPrivateChange = (e) => {
     setPrivate(e.target.value)
@@ -86,10 +89,39 @@ const VideoUploadPage = () => {
       }
     });
   }
-  // onClickHandler
-  const onClick = () => {}
+
+
   // onSubmitHandler
-  const onSubmit = () => {}
+  const onSubmit = (e) => {
+    e.preventDefault();
+
+    const variables = {
+      writer: user.userData._id,
+      title: VideoTitle,
+      description: Description,
+      privacy: Private,
+      filePath: FilePath,
+      category: Category,
+      duration: Duration,
+      thumbnail: ThumbnailPath
+    }
+
+    Axios.post('/api/video/uploadVideo', variables)
+    .then(response => {
+      if(response.data.success){
+        console.log(response.data)
+        message.success('video Uploaded Successfully')
+
+        setTimeout( () => {
+          props.history.push('/')
+        }, 3000) //3초 후 메인페이지로 이동
+
+      }
+      else {
+        alert("Failed to upload video")
+      }
+    })
+  }
 
   return (
     <div style={{ maxWidth: '700px', margin: '2rem auto' }}>
@@ -121,12 +153,12 @@ const VideoUploadPage = () => {
 
           <p>
             <label>Title</label>
-            <Input onChange={onChangeTitle} value={title}></Input>
+            <Input onChange={onChangeTitle} value={VideoTitle}></Input>
           </p>
 
           <p>
             <label>Description</label>
-            <TextArea onChange={onChangeDesc} value={desc}>
+            <TextArea onChange={onChangeDesc} value={Description}>
 
             </TextArea>
           </p>
@@ -144,7 +176,7 @@ const VideoUploadPage = () => {
             </select>
           </p>
 
-          <Button type="primary" size="large" onClick={onClick}>Submit</Button>
+          <Button type="primary" size="large" onClick={onSubmit}>Submit</Button>
 
         </div>
       </Form>

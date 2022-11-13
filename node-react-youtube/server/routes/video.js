@@ -103,7 +103,7 @@ router.get("/getVideos", (req, res) => {
 });
 
 //mongoDB로부터 비디오 데이터 가져오기 - VideoDetailPage
-router.get("/getVideoDetail", (req, res) => {
+router.post("/getVideoDetail", (req, res) => {
     //클라이언트가 보낸 비디오 ID를 사용하여 DB에서 해당 비디오 데이터 가져오기
     Video.findOne({ "_id" : req.body.videoId })
         .populate('writer')

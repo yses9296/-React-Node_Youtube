@@ -77,7 +77,7 @@ router.post("/thumbnail", (req, res) => {
 });
 
 
-
+//mongoDB에 비디오 데이터 저장하기
 router.post("/uploadVideo", (req, res) => {
     //비디오 정보들을 DB에 저장
     const video = new Video(req.body)
@@ -89,6 +89,17 @@ router.post("/uploadVideo", (req, res) => {
     }) 
 
 
+});
+
+//mongoDB로부터 비디오 데이터 가져오기
+router.get("/getVideos", (req, res) => {
+    //비디오 정보들을 DB로부터 가져와 클라이언트에 전달하기
+    Video.find()
+        .populate('writer')
+        .exec( (err, videos) => {
+            if(err) return res.status(400).send(err);
+            res.status(200).json( {success: true, videos})
+        })
 });
 
 module.exports = router;

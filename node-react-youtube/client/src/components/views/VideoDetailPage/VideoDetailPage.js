@@ -8,11 +8,10 @@ import Comment from './Sections/Comment'
 function VideoDetailPage(props) {
 
     const _videoId = props.match.params.videoId;
-    const videoVariable = {
-        videoId: _videoId
-    }
+    const videoVariable = { videoId: _videoId }
 
     const[VideoDetail, setVideoDetail] = useState([]);
+    const [Comments ,setComments] = useState('');
 
     useEffect( () => {
         Axios.post('/api/video/getVideoDetail', videoVariable)
@@ -27,6 +26,7 @@ function VideoDetailPage(props) {
             })
     }
     ,[])
+
 
     if (VideoDetail.writer) {
 
@@ -49,7 +49,7 @@ function VideoDetailPage(props) {
                         </List.Item>
 
                         {/* Comments */}
-                        <Comment />
+                        <Comment postId={VideoDetail._id}/>
                     </div>
                 </Col>
                 <Col lg={6} xs={24}>

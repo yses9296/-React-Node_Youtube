@@ -5,11 +5,11 @@ import { Button, Input } from 'antd';
 const { TextArea } = Input;
 
 function Comment(props) {
-    const user = useSelector(state => state.user)
+    let user = useSelector(state => state.user)
 
     const [Comment, setComment] = useState('');
     const handleChange = useCallback((e) => {setComment(e.target.value)},[])
-    const onSubmit = useCallback( (e) => {
+    const onSubmit = (e) => {
         e.preventDefault();
 
         let variables = {
@@ -27,7 +27,7 @@ function Comment(props) {
                 alert('Failed to save Comment')
             }
         })
-    },[])
+    }
 
     return (
         <div>

@@ -24,6 +24,7 @@ function Comment(props) {
             if (response.data.success) {
                 console.log(response.data.result)
                 props.refreshFunction(response.data.result);
+                setComment('')
             }
             else{
                 alert('Failed to save Comment')

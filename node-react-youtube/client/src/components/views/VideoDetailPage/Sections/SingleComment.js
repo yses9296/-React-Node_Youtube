@@ -11,7 +11,7 @@ function SingleComment(props) {
     const [CommentValue, setcommentValue] = useState('');
 
     const onClickReplyOpen = () => {
-        setOpenReply(true)
+        setOpenReply(!OpenReply)
     }
     const handleChange = (e) => {
         setcommentValue(e.target.value)

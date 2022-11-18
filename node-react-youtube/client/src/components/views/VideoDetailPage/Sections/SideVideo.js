@@ -24,12 +24,12 @@ function SideVideo() {
         return (
             <div key={index} style={{ display: 'flex', marginTop: '1rem', padding: '0 2rem' }}>
                 <div style={{ width:'40%', marginRight:'1rem' }}>
-                    <a href  style={{ color: 'gray' }}>
+                    <a href={`/video/${video._id}`} style={{ color: 'gray' }}>
                         <img style={{ width: '100%' }} src={`http://localhost:5000/${video.thumbnail}`} alt='thumbnail'></img>
                     </a>
                 </div>
                 <div style={{ width:'50%' }}>
-                    <a href  style={{ color: 'gray' }}>
+                    <a href={`/video/${video._id}`} style={{ color: 'gray' }}>
                         <span style={{ fontSize: '1rem', color: 'black' }}>{video.title}</span><br />
                         <span>{video.writer.name}</span><br />
                         <span>{video.views}</span><br />

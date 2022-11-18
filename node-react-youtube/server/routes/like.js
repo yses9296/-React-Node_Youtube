@@ -49,11 +49,12 @@ router.post("/getDislikes", (req, res) => {
 router.post("/upLike", (req, res) => {
     let variable = {}
     if(req.body.videoId){
-        variable = {videoId: req.body.videoId}
+        variable = { videoId: req.body.videoId, userId: req.body.userId }
     }
     else{
-        variable = {commentId: req.body.commentId}
+        variable = { commentId: req.body.commentId, userId: req.body.userId }
     }
+
     //Like collection에 클릭 정보 넣는다.
     const like = new Like(variable)
     like.save( (err, likeResult) => {
@@ -71,10 +72,10 @@ router.post("/upLike", (req, res) => {
 router.post("/unLike", (req, res) => {
     let variable = {}
     if(req.body.videoId){
-        variable = {videoId: req.body.videoId}
+        variable = { videoId: req.body.videoId, userId: req.body.userId }
     }
     else{
-        variable = {commentId: req.body.commentId}
+        variable = { commentId: req.body.commentId, userId: req.body.userId }
     }
 
     Like.findOneAndDelete(variable)
@@ -87,11 +88,12 @@ router.post("/unLike", (req, res) => {
 router.post("/upDislike", (req, res) => {
     let variable = {}
     if(req.body.videoId){
-        variable = {videoId: req.body.videoId}
+        variable = { videoId: req.body.videoId, userId: req.body.userId }
     }
     else{
-        variable = {commentId: req.body.commentId}
+        variable = { commentId: req.body.commentId, userId: req.body.userId }
     }
+
     //Dislike collection에 클릭 정보 넣는다.
     const dislike = new Dislike(variable)
     dislike.save( (err, dislikeResult) => {
@@ -109,10 +111,10 @@ router.post("/upDislike", (req, res) => {
 router.post("/unDislike", (req, res) => {
     let variable = {}
     if(req.body.videoId){
-        variable = {videoId: req.body.videoId}
+        variable = { videoId: req.body.videoId, userId: req.body.userId }
     }
     else{
-        variable = {commentId: req.body.commentId}
+        variable = { commentId: req.body.commentId, userId: req.body.userId }
     }
 
     Dislike.findOneAndDelete(variable)

@@ -57,23 +57,80 @@ function LikeDislikes(props) {
     },[])
 
     const onClickLikeButton = useCallback( () => {
+        if(!LikeAction){
+            Axios.post('/api/like/upLike', variable)
+            .then( (response) => {
+                if(response.data.success){
+                    setLikes(Likes + 1)
+                    setLikeAction(true)
 
+                    if(DislikeAction){
+                        setDislikeAction(false)
+                        setDislikes(Dislikes - 1)
+                    }
+                }
+                else{
+                    alert('Failed to increase the like')
+                }
+            })
+        }
+        else {
+            Axios.post('/api/like/unLike', variable)
+            .then( (response) => {
+                if(response.data.success){
+                    setLikes(Likes - 1)
+                    setLikeAction(false)
+                }
+                else{
+                    alert('Failed to decrease the like')
+                }
+            })
+        }
     }, [LikeAction])
-    const onClickDislikeButton = useCallback( () => {
 
+    const onClickDislikeButton = useCallback( () => {
+        if(!DislikeAction){
+            Axios.post('/api/like/upDislike', variable)
+            .then( (response) => {
+                if(response.data.success){
+                    setDislikes(Likes + 1)
+                    setDislikeAction(true)
+
+                    if(LikeAction){
+                        setLikeAction(false)
+                        setLikes(Likes - 1)
+                    }
+                }
+                else{
+                    alert('Failed to increase the dislike')
+                }
+            })
+        }
+        else {
+            Axios.post('/api/like/unDislike', variable)
+            .then( (response) => {
+                if(response.data.success){
+                    setDislikes(Dislikes - 1)
+                    setDislikeAction(false)
+                }
+                else{
+                    alert('Failed to decrease the dislike')
+                }
+            })
+        }
     }, [DislikeAction])
 
     return (
         <div>
             <span key="comment-basic-like">
                 <Tooltip title="Like">
-                    <Icon type="like" theme={LikeAction ? 'filled' : 'outlined'} onClick />
+                    <Icon type="like" theme={LikeAction ? 'filled' : 'outlined'} onClick={onClickLikeButton}/>
                     <span style={{ paddingLeft:'8px', cursor: 'auto' }}> {Likes} </span>
                 </Tooltip>
             </span>
             <span key="comment-basic-dislike">
                 <Tooltip title="Dislike">
-                    <Icon type="dislike" theme={DislikeAction ? 'filled' : 'outlined'} onClick />
+                    <Icon type="dislike" theme={DislikeAction ? 'filled' : 'outlined'} onClick={onClickDislikeButton} />
                     <span style={{ paddingLeft:'8px', cursor: 'auto' }}> {Dislikes} </span>
                 </Tooltip>
             </span>

@@ -56,7 +56,7 @@ function LikeDislikes(props) {
         })
     },[])
 
-    const onClickLikeButton = useCallback( () => {
+    const onClickLikeButton = () => {
         if(!LikeAction){
             Axios.post('/api/like/upLike', variable)
             .then( (response) => {
@@ -86,14 +86,14 @@ function LikeDislikes(props) {
                 }
             })
         }
-    }, [LikeAction])
+    }
 
-    const onClickDislikeButton = useCallback( () => {
+    const onClickDislikeButton = () => {
         if(!DislikeAction){
             Axios.post('/api/like/upDislike', variable)
             .then( (response) => {
                 if(response.data.success){
-                    setDislikes(Likes + 1)
+                    setDislikes(Dislikes + 1)
                     setDislikeAction(true)
 
                     if(LikeAction){
@@ -118,7 +118,7 @@ function LikeDislikes(props) {
                 }
             })
         }
-    }, [DislikeAction])
+    }
 
     return (
         <div>
